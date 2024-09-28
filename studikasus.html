@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Personal</title>
+    <style>
+        .avatar {
+          vertical-align: middle;
+          width: 200px;
+          height: 200px;
+          border-radius: 50%;
+          object-fit: cover;
+          /* border: 5px solid hsl(154, 100%, 50%); */
+        }
+        .link-section {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            margin-left: 666px;
+
+        }
+        </style>
+            <style>
+                .bottom-right {
+                    position: absolute; /* Atur posisi secara absolut */
+                    bottom: 10px; /* Jarak dari bawah */
+                    right: 10px; /* Jarak dari kanan */
+                    font-size: 16px; /* Ukuran font */
+                    color: black; /* Warna teks */
+                }
+            </style>
+            
+</head>
+<body>
+    <!-- <picture>
+        <source media="(min-width:650px)" srcset="foto2.png">
+        <source media="(min-width:465px)" srcset="foto2.png">
+        <img src="lebaran.jpg" alt="foto" style="width:auto;">
+      </picture> -->
+
+    <center><img src="merem.jpg" alt="Avatar" class="avatar"></center>
+    <center><h1>Hilman Taufiq AL Hakim</h1></center>
+    <center><h2>12022203334</h2></center>
+    <center> <i>SI4604</i> - <b><u>Sistem Infomasi</u></b></center>
+   
+    <div class="link-section" align="center">
+        <center> <a href="http://www.youtube.com/@hilmantaufiq3794" target="_blank">
+            <img src = "yt2.webp" 
+            style="width: 55px;height: 55px;border-radius: 100%;"/>
+            </a></center>
+        <center> <a href="https://www.instagram.com/hilmantfq/" target="_blank">
+            <img src = "ig2.webp" 
+            style="width: 80px;height: 80px;border-radius: 100%;"/></a></center>
+        <center> <a href="https://www.tiktok.com/@lowwthehoutman?is_from_webapp=1&sender_device=pc" target="_blank">
+            <img src = "tiktok.jpeg"
+            style="width: 50px;height: 50px;border-radius: 100%;"/> </a></center>
+    <div class="bottom-right">
+<p style="color:brown;font-family: Arial, Helvetica, sans-serif; font-size: 10px;">Tanggal/Waktu: <span id="tanggalwaktu"></span></p>
+<script>
+var dt = new Date();
+document.getElementById("tanggalwaktu").innerHTML = dt.toLocaleString();
+</script>
+</div>
+
+   
+</body>
+</html>
