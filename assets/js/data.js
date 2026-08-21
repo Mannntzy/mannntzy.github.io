@@ -78,16 +78,6 @@ const EXPERIENCES = [
     ]
   },
   {
-    role: 'Data Analyst',
-    org: 'PT. ARRANET',
-    period: '2025',
-    start: '2025-01', end: '2025-12', approx: true,
-    type: 'Profesional',
-    todo: true,
-    // Kosongkan selama detail belum siap; kartu tetap tampil tanpa bullet placeholder.
-    points: []
-  },
-  {
     role: 'UI/UX Designer & Technical Documentation',
     org: 'PT. Sinar Harsa Garsia',
     period: 'Oct 2024 – Apr 2025',

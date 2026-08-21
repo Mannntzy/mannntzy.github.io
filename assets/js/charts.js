@@ -210,14 +210,18 @@
     // legenda
     const legend = $('#chart-timeline-legend');
     if (legend) {
-      legend.innerHTML = TYPE_ORDER.map((t, i) =>
+      // hanya tampilkan tipe yang benar-benar punya batang di grafik
+      legend.innerHTML = TYPE_ORDER.map((t, i) => [t, i])
+        .filter(([t]) => rows.some(r => r.type === t))
+        .map(([t, i]) =>
         `<span class="inline-flex items-center gap-1.5 text-xs font-medium text-ink-600 dark:text-ink-300">
            <span class="w-3 h-3 rounded" style="background:${c.cat[i]}"></span>${t}
          </span>`).join('') +
+        (rows.some(r => r.approx) ?
         `<span class="inline-flex items-center gap-1.5 text-xs font-medium text-ink-500 dark:text-ink-400">
            <span class="w-3 h-3 rounded" style="background:${c.cat[1]};background-image:repeating-linear-gradient(45deg,${c.surface}80 0 2px,transparent 2px 5px)"></span>
            periode belum dikonfirmasi
-         </span>`;
+         </span>` : '');
     }
   }
 

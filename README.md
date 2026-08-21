@@ -35,11 +35,10 @@ Di PowerShell, pemisah perintah adalah `;` bukan `&&`.
 | Item | Lokasi | Cara isi |
 |---|---|---|
 | **File CV PDF** | `assets/docs/CV-Hilman-Taufiq-Al-Hakim.pdf` | Selama file belum ada, tombol Hero otomatis berubah jadi "Minta CV" yang membuka email. Begitu file ditaruh dengan nama persis itu, tombolnya kembali jadi tombol unduh. |
-| Detail Data Analyst PT. ARRANET | `assets/js/data.js` -> `EXPERIENCES` | isi `points`, perbaiki `period`/`start`/`end`, hapus `approx: true` dan `todo: true` |
 | Link GitHub | `index.html`, ikon sosial di Hero | ada komentar penanda di sana |
 | Endpoint form kontak | `index.html`, atribut `action` pada `#contact-form` | lihat bagian Form kontak di bawah |
 
-Sudah lengkap: foto profil, 4 sertifikat, 7 project, 4 pengalaman, favicon, dan og-image.
+Sudah lengkap: foto profil, 4 sertifikat, 7 project, 3 pengalaman, favicon, dan og-image.
 
 ## Form kontak
 
