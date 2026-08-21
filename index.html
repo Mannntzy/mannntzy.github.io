@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hilman Taufiq Al Hakim | Data Analyst &amp; Data Scientist</title>
+<meta name="description" content="Portfolio Hilman Taufiq Al Hakim | Data Analyst &amp; Data Scientist. Mengolah data mentah menjadi insight lewat BigQuery, Looker Studio, dan machine learning (Python, XGBoost), didukung pengalaman UI/UX design." />
+<meta name="author" content="Hilman Taufiq Al Hakim" />
+<meta name="theme-color" content="#4f46e5" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Hilman Taufiq Al Hakim | Data Analyst &amp; Data Scientist" />
+<meta property="og:description" content="Data Analysis &amp; Business Intelligence, Machine Learning/NLP, dan UI/UX Design dalam satu profil." />
+<meta property="og:image" content="assets/img/og-image.jpg" />
+<meta property="og:locale" content="id_ID" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="alternate icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;family=Inter+Tight:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['"Inter Tight"', 'system-ui', 'sans-serif'],
+        display: ['Fraunces', 'Georgia', 'serif'],
+        mono: ['"JetBrains Mono"', 'monospace']
+      },
+      colors: {
+        brand: {
+          50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',
+          400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca',
+          800:'#3730a3',900:'#312e81',950:'#1e1b4b'
+        },
+        accent: {
+          300:'#fcd34d',400:'#fbbf24',500:'#f59e0b',600:'#d97706'
+        },
+        ink: {
+          50:'#f8f8fb',100:'#f0f0f5',200:'#e2e2eb',300:'#c5c5d3',
+          400:'#9c9cb0',500:'#75758c',600:'#5b5b70',700:'#48485a',
+          800:'#353544',900:'#24242f',950:'#17161d'
+        }
+      },
+      keyframes: {
+        float: { '0%,100%': { transform:'translateY(0)' }, '50%': { transform:'translateY(-14px)' } },
+        blob: { '0%,100%': { transform:'translate(0,0) scale(1)' }, '33%': { transform:'translate(24px,-32px) scale(1.08)' }, '66%': { transform:'translate(-20px,20px) scale(.94)' } },
+        bounceSlow: { '0%,100%': { transform:'translateY(0)' }, '50%': { transform:'translateY(8px)' } }
+      },
+      animation: {
+        float: 'float 6s ease-in-out infinite',
+        blob: 'blob 18s ease-in-out infinite',
+        'bounce-slow': 'bounceSlow 2s ease-in-out infinite'
+      }
+    }
+  }
+}
+</script>
+<style>
+  html { scroll-padding-top: 4.5rem; }
+  body { -webkit-font-smoothing: antialiased; }
+  ::selection { background:#4f46e5; color:#fff; }
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background:#c5c5d3; border-radius:9999px; }
+  .dark ::-webkit-scrollbar-thumb { background:#48485a; }
+
+  /* ---------- grain overlay: bikin gradient tidak terlihat "plastik" ---------- */
+  .grain::after {
+    content:''; position:absolute; inset:0; pointer-events:none; z-index:1;
+    opacity:.035; mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .dark .grain::after { opacity:.06; mix-blend-mode:overlay; }
+
+  /* ---------- scroll progress ---------- */
+  #scroll-progress {
+    position:fixed; top:0; left:0; height:2px; width:0; z-index:70;
+    background:linear-gradient(90deg,#818cf8,#4f46e5);
+    transition:width .1s linear;
+  }
+
+  /* ---------- nav pill + indikator geser ---------- */
+  #nav-pills { position:relative; }
+  #nav-indicator {
+    position:absolute; top:0; left:0; height:100%; border-radius:9999px;
+    background:rgba(79,70,229,.10);
+    transition:transform .45s cubic-bezier(.2,.8,.2,1), width .45s cubic-bezier(.2,.8,.2,1), opacity .3s;
+    opacity:0; z-index:0;
+  }
+  .dark #nav-indicator { background:rgba(129,140,248,.16); }
+  .nav-link { position:relative; z-index:1; transition:color .3s ease; }
+  .nav-link.active { color:#4338ca; }
+  .dark .nav-link.active { color:#a5b4fc; }
+
+  /* ---------- kartu: permukaan berlapis + sorot mengikuti kursor ---------- */
+  .surface {
+    position:relative; isolation:isolate;
+    background:linear-gradient(180deg,#fff,#fafaff);
+    box-shadow:0 1px 2px rgba(16,24,40,.04), 0 8px 24px -12px rgba(16,24,40,.10);
+    transition:transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease, border-color .4s ease;
+  }
+  .dark .surface {
+    background:linear-gradient(180deg,rgba(45,45,58,.85),rgba(28,28,38,.85));
+    box-shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.55);
+  }
+  /* garis tipis di tepi atas kartu, bikin permukaan terasa punya ketebalan */
+  .surface::before {
+    content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:2;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.9);
+  }
+  .dark .surface::before { box-shadow:inset 0 1px 0 rgba(255,255,255,.07); }
+  /* angkat hanya untuk kartu yang bisa diklik/di-hover (yang punya .spotlight) */
+  .surface.spotlight:hover {
+    transform:translateY(-6px);
+    box-shadow:0 2px 4px rgba(16,24,40,.05), 0 24px 48px -20px rgba(79,70,229,.30);
+  }
+  .dark .surface.spotlight:hover { box-shadow:0 2px 4px rgba(0,0,0,.35), 0 24px 48px -20px rgba(129,140,248,.30); }
+
+  .spotlight { position:relative; isolation:isolate; }
+  /* z-index -1: di atas latar kartu, tapi tetap di bawah teks */
+  .spotlight::after {
+    content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:-1;
+    background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%), rgba(99,102,241,.14), transparent 65%);
+    opacity:0; transition:opacity .4s ease;
+  }
+  .dark .spotlight::after { background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%), rgba(129,140,248,.13), transparent 65%); }
+  .spotlight:hover::after { opacity:1; }
+
+  .card-lift { transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease, border-color .35s ease; }
+  .card-lift:hover { transform: translateY(-6px); }
+
+  /* ---------- aksen ---------- */
+  .grad-text {
+    background:linear-gradient(120deg,#4338ca 0%,#6366f1 40%,#818cf8 72%,#4338ca 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .dark .grad-text { background:linear-gradient(120deg,#a5b4fc 0%,#c7d2fe 40%,#818cf8 75%,#a5b4fc 100%); -webkit-background-clip:text; background-clip:text; }
+
+  .eyebrow { display:flex; align-items:center; gap:.75rem; }
+  .eyebrow::after { content:''; height:1px; width:3rem; background:linear-gradient(90deg,#6366f1,transparent); }
+
+  /* fokus keyboard yang konsisten di seluruh halaman */
+  :focus-visible { outline:2px solid #4f46e5; outline-offset:3px; border-radius:6px; }
+  .dark :focus-visible { outline-color:#a5b4fc; }
+
+  /* kilau menyapu pada tombol utama */
+  .btn-shine { position:relative; overflow:hidden; }
+  .btn-shine::after {
+    content:''; position:absolute; top:0; left:-70%; width:45%; height:100%;
+    transform:skewX(-20deg); pointer-events:none;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.38),transparent);
+    transition:left .65s cubic-bezier(.2,.8,.2,1);
+  }
+  .btn-shine:hover::after { left:130%; }
+
+  /* nomor urut section */
+  .eyebrow .num {
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:0;
+    padding:.15rem .4rem; border-radius:.35rem;
+    background:rgba(79,70,229,.12); color:#4338ca;
+  }
+  .dark .eyebrow .num { background:rgba(129,140,248,.16); color:#a5b4fc; }
+
+  /* tombol kembali ke atas */
+  #to-top {
+    position:fixed; right:1.25rem; bottom:1.25rem; z-index:45;
+    opacity:0; transform:translateY(12px) scale(.9); pointer-events:none;
+    transition:opacity .35s ease, transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  #to-top.show { opacity:1; transform:none; pointer-events:auto; }
+
+  /* judul section: garis aksen tipis di kiri saat masuk layar */
+  .sec-head { position:relative; }
+  .sec-head::before {
+    content:''; position:absolute; left:-1.25rem; top:.35rem; bottom:.35rem; width:2px; border-radius:2px;
+    background:linear-gradient(180deg,#6366f1,transparent);
+    opacity:0; transform:scaleY(.4); transform-origin:top;
+    transition:opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  @media (min-width:1024px) { .sec-head.in::before { opacity:1; transform:scaleY(1); } }
+
+  /* pemisah halus antar section */
+  .rule {
+    height:1px; border:0; margin:0;
+    background:linear-gradient(90deg,transparent,rgba(120,130,150,.22),transparent);
+  }
+  .dark .rule { background:linear-gradient(90deg,transparent,rgba(160,175,200,.16),transparent); }
+
+  /* tipografi: judul memakai serif berkarakter, isi tetap sans */
+  h1, h2, .font-display {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 0, 'WONK' 0;
+    letter-spacing: -0.015em;
+  }
+  h1 { font-weight: 700; }
+  h2 { font-weight: 600; }
+
+  .chip-icon { transition:transform .35s cubic-bezier(.2,.8,.2,1), background-color .3s ease, color .3s ease; }
+  .group:hover .chip-icon { transform:translateY(-2px) scale(1.08); }
+
+  .link-underline { background-image:linear-gradient(currentColor,currentColor); background-size:0% 1px; background-repeat:no-repeat; background-position:0 100%; transition:background-size .35s ease; }
+  .link-underline:hover { background-size:100% 1px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+      transition-duration: .001ms !important; scroll-behavior: auto !important;
+    }
+    [data-aos] { opacity:1 !important; transform:none !important; }
+  }
+</style>
+</head>
+<body class="bg-white dark:bg-ink-950 text-ink-800 dark:text-ink-200 font-sans antialiased overflow-x-hidden">
+
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:top-3 focus:left-3 focus:bg-brand-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Lewati ke konten utama</a>
+
+<div id="scroll-progress" aria-hidden="true"></div>
+
+<!-- ================= NAVBAR ================= -->
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+  <nav class="mx-auto max-w-[88rem] px-5 sm:px-8 lg:px-12" aria-label="Navigasi utama">
+    <div id="nav-inner" class="flex items-center justify-between h-16 md:h-20 transition-all duration-300">
+      <a href="#home" class="group flex items-center gap-2.5 font-extrabold tracking-tight text-lg">
+        <span class="grid place-items-center w-9 h-9 rounded-xl shadow-lg shadow-brand-600/25 transition-transform group-hover:rotate-6 overflow-hidden">
+          <svg viewBox="0 0 64 64" class="w-9 h-9" aria-hidden="true">
+            <defs><linearGradient id="hl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#312e81"/></linearGradient></defs>
+            <rect width="64" height="64" rx="15" fill="url(#hl)"/>
+            <rect x="13" y="16" width="7" height="32" rx="3.5" fill="#fff"/>
+            <rect x="13" y="28.5" width="20" height="7" rx="3.5" fill="#fff"/>
+            <rect x="26" y="16" width="7" height="32" rx="3.5" fill="#fff"/>
+            <rect x="35" y="16" width="16" height="7" rx="3.5" fill="#a5b4fc"/>
+            <rect x="39.5" y="16" width="7" height="32" rx="3.5" fill="#a5b4fc"/>
+          </svg>
+        </span>
+        <span class="hidden sm:inline text-ink-950 dark:text-white">Hilman<span class="text-brand-500">.</span></span>
+      </a>
+
+      <ul id="nav-pills" class="hidden md:flex items-center gap-0.5 text-sm font-medium p-1 rounded-full border border-ink-100/80 dark:border-ink-800/80 bg-white/60 dark:bg-ink-900/50 backdrop-blur">
+        <span id="nav-indicator" aria-hidden="true"></span>
+        <li><a href="#home" class="nav-link inline-block px-3.5 py-1.5 rounded-full hover:text-brand-600 dark:hover:text-brand-300">Home</a></li>
+        <li><a href="#about" class="nav-link inline-block px-3.5 py-1.5 rounded-full hover:text-brand-600 dark:hover:text-brand-300">About</a></li>
+        <li><a href="#skills" class="nav-link inline-block px-3.5 py-1.5 rounded-full hover:text-brand-600 dark:hover:text-brand-300">Skills</a></li>
+        <li><a href="#experience" class="nav-link inline-block px-3.5 py-1.5 rounded-full hover:text-brand-600 dark:hover:text-brand-300">Experience</a></li>
+        <li><a href="#projects" class="nav-link inline-block px-3.5 py-1.5 rounded-full hover:text-brand-600 dark:hover:text-brand-300">Projects</a></li>
+        <li><a href="#education" class="nav-link inline-block px-3.5 py-1.5 rounded-full hover:text-brand-600 dark:hover:text-brand-300">Education</a></li>
+      </ul>
+
+      <div class="flex items-center gap-1.5">
+        <a href="#contact" class="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-600 text-white text-sm font-semibold shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-brand-600/40 hover:-translate-y-0.5 transition-all">
+          Contact
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/></svg>
+        </a>
+
+        <button id="theme-toggle" type="button" aria-label="Ganti tema terang/gelap"
+          class="grid place-items-center w-10 h-10 rounded-full border border-ink-200 dark:border-ink-800 hover:border-brand-400 dark:hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-300 hover:rotate-12 transition-all">
+          <svg class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+
+        <button id="menu-toggle" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="mobile-menu"
+          class="md:hidden grid place-items-center w-10 h-10 rounded-full border border-ink-200 dark:border-ink-800 hover:border-brand-400 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div id="mobile-overlay" class="fixed inset-0 z-[55] bg-ink-950/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+<aside id="mobile-menu" class="fixed top-0 right-0 z-[60] h-full w-72 max-w-[85vw] flex flex-col bg-white dark:bg-ink-900 shadow-2xl translate-x-full transition-transform duration-300 ease-out md:hidden" aria-hidden="true">
+  <div class="flex items-center justify-between h-16 px-5 border-b border-ink-100 dark:border-ink-800">
+    <span class="font-bold">Menu</span>
+    <button id="menu-close" aria-label="Tutup menu" class="grid place-items-center w-9 h-9 rounded-lg border border-ink-200 dark:border-ink-700">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <ul class="flex-1 overflow-y-auto p-4 space-y-1 text-[15px] font-medium">
+    <li><a href="#home" class="mobile-link block px-4 py-3 rounded-2xl hover:bg-brand-50 dark:hover:bg-ink-800 hover:text-brand-700 dark:hover:text-brand-300 transition-colors">Home</a></li>
+    <li><a href="#about" class="mobile-link block px-4 py-3 rounded-2xl hover:bg-brand-50 dark:hover:bg-ink-800 hover:text-brand-700 dark:hover:text-brand-300 transition-colors">About</a></li>
+    <li><a href="#skills" class="mobile-link block px-4 py-3 rounded-2xl hover:bg-brand-50 dark:hover:bg-ink-800 hover:text-brand-700 dark:hover:text-brand-300 transition-colors">Skills</a></li>
+    <li><a href="#experience" class="mobile-link block px-4 py-3 rounded-2xl hover:bg-brand-50 dark:hover:bg-ink-800 hover:text-brand-700 dark:hover:text-brand-300 transition-colors">Experience</a></li>
+    <li><a href="#projects" class="mobile-link block px-4 py-3 rounded-2xl hover:bg-brand-50 dark:hover:bg-ink-800 hover:text-brand-700 dark:hover:text-brand-300 transition-colors">Projects</a></li>
+    <li><a href="#education" class="mobile-link block px-4 py-3 rounded-2xl hover:bg-brand-50 dark:hover:bg-ink-800 hover:text-brand-700 dark:hover:text-brand-300 transition-colors">Education</a></li>
+    <li class="pt-2"><a href="#contact" class="mobile-link btn-shine block text-center px-4 py-3 rounded-2xl bg-brand-600 text-white font-semibold shadow-lg shadow-brand-600/25">Contact</a></li>
+  </ul>
+
+  <div class="shrink-0 p-5 border-t border-ink-100 dark:border-ink-800">
+    <p class="text-[11px] font-bold uppercase tracking-widest text-ink-400">Hubungi langsung</p>
+    <a href="mailto:hilman01taufiq@gmail.com" class="mt-2 block text-sm font-semibold text-brand-600 dark:text-brand-300 break-all">hilman01taufiq@gmail.com</a>
+    <a href="https://wa.me/6285173136698" target="_blank" rel="noopener noreferrer" class="mt-1 block text-sm text-ink-500 dark:text-ink-400">0851-7313-6698</a>
+  </div>
+</aside>
+
+<main id="main">
+
+<!-- ================= HERO ================= -->
+<section id="home" class="relative min-h-[92svh] flex items-center pt-20 pb-10 overflow-hidden grain">
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div data-parallax="0.020" class="absolute -top-24 -left-24 w-[26rem] h-[26rem] rounded-full bg-brand-300/40 dark:bg-brand-700/25 blur-3xl animate-blob"></div>
+    <div data-parallax="0.035" class="absolute top-1/3 -right-24 w-[30rem] h-[30rem] rounded-full bg-sky-300/35 dark:bg-sky-800/20 blur-3xl animate-blob" style="animation-delay:-6s"></div>
+    <div data-parallax="0.015" class="absolute bottom-0 left-1/3 w-[22rem] h-[22rem] rounded-full bg-emerald-200/40 dark:bg-emerald-900/20 blur-3xl animate-blob" style="animation-delay:-12s"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(100,116,139,.16)_1px,transparent_0)] [background-size:28px_28px] opacity-60 dark:opacity-20"></div>
+  </div>
+
+  <div class="mx-auto max-w-[88rem] px-5 sm:px-8 lg:px-12 w-full">
+    <div class="grid lg:grid-cols-[1.05fr_.95fr] gap-12 lg:gap-14 items-center">
+
+      <div class="order-2 lg:order-1">
+        <p data-aos="fade-up" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 ring-1 ring-brand-200/70 dark:ring-brand-800">
+          <span class="relative flex w-2 h-2">
+            <span class="absolute inline-flex w-full h-full rounded-full bg-brand-400 opacity-75 animate-ping"></span>
+            <span class="relative inline-flex w-2 h-2 rounded-full bg-brand-500"></span>
+          </span>
+          Open to opportunities &middot; Bandung, Indonesia
+        </p>
+
+        <h1 class="mt-6 text-[2.3rem] sm:text-5xl lg:text-[3.6rem] font-bold tracking-[-0.02em] leading-[1.04] text-ink-950 dark:text-white">
+          <span data-aos="fade-up" data-aos-delay="80" class="block text-base sm:text-lg font-medium tracking-normal text-ink-500 dark:text-ink-400 mb-3">Hi, saya</span>
+          <span data-aos="fade-up" data-aos-delay="140" class="block">Hilman Taufiq</span>
+          <span data-aos="fade-up" data-aos-delay="200" class="block grad-text">Al Hakim</span>
+        </h1>
+
+        <p data-aos="fade-up" data-aos-delay="220" class="mt-4 text-lg sm:text-xl font-semibold text-ink-700 dark:text-ink-300 min-h-[2.2em]">
+          <span id="typed" class="text-brand-600 dark:text-brand-300"></span>
+        </p>
+
+        <p data-aos="fade-up" data-aos-delay="300" class="mt-4 max-w-xl text-[15px] sm:text-base leading-relaxed text-ink-600 dark:text-ink-400">
+          Information Systems graduate dari Telkom University dengan pengalaman di
+          <strong class="font-semibold text-ink-800 dark:text-ink-200">data analysis</strong>,
+          <strong class="font-semibold text-ink-800 dark:text-ink-200">machine learning &amp; NLP</strong>, dan
+          <strong class="font-semibold text-ink-800 dark:text-ink-200">UI/UX design</strong>.
+          Terbiasa mengolah data mentah menjadi insight dan interface yang mudah dipakai.
+        </p>
+
+        <div data-aos="fade-up" data-aos-delay="380" class="mt-8 flex flex-wrap gap-3">
+          <a href="#projects" class="btn-shine group inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-brand-600 text-white font-semibold shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/40 hover:-translate-y-0.5 active:translate-y-0 transition-all">
+            Lihat Projects
+            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/></svg>
+          </a>
+          <!-- TODO: taruh CV PDF final di assets/docs/ dan sesuaikan nama file di bawah -->
+          <a href="assets/docs/CV-Hilman-Taufiq-Al-Hakim.pdf" download class="group inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-ink-200 dark:border-ink-700 font-semibold hover:border-brand-400 hover:text-brand-700 dark:hover:text-brand-300 hover:-translate-y-0.5 transition-all">
+            <svg class="w-4 h-4 transition-transform group-hover:translate-y-0.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+            Download CV
+          </a>
+          <a href="#contact" class="inline-flex items-center px-5 py-3 rounded-xl font-semibold text-ink-600 dark:text-ink-300 hover:text-brand-700 dark:hover:text-brand-300 hover:bg-brand-50 dark:hover:bg-ink-900 transition-all">
+            Hubungi Saya
+          </a>
+        </div>
+
+        <div data-aos="fade-up" data-aos-delay="440" class="mt-9 flex flex-wrap items-center gap-2.5">
+          <span class="inline-flex items-center gap-2 pl-2 pr-3.5 py-1.5 rounded-full text-xs font-semibold surface border border-ink-100 dark:border-ink-800/80">
+            <span class="grid place-items-center w-6 h-6 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span class="text-ink-700 dark:text-ink-200">Associate Data Scientist &middot; <span class="text-brand-600 dark:text-brand-300">KOMPETEN</span></span>
+          </span>
+          <span class="inline-flex items-center gap-2 pl-2 pr-3.5 py-1.5 rounded-full text-xs font-semibold surface border border-ink-100 dark:border-ink-800/80">
+            <span class="grid place-items-center w-6 h-6 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.9" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="2.8"/><path stroke-linecap="round" d="M5 6v12c0 1.55 3.13 2.8 7 2.8s7-1.25 7-2.8V6"/></svg>
+            </span>
+            <span class="text-ink-700 dark:text-ink-200">SQL Advanced &middot; HackerRank</span>
+          </span>
+        </div>
+
+        <div data-aos="fade-up" data-aos-delay="500" class="mt-6 flex items-center gap-3">
+          <a href="mailto:hilman01taufiq@gmail.com" aria-label="Kirim email" class="grid place-items-center w-11 h-11 rounded-xl border border-ink-200 dark:border-ink-700 hover:bg-brand-600 hover:text-white hover:border-brand-600 hover:-translate-y-1 transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path stroke-linecap="round" d="M3.5 7l8.5 6 8.5-6"/></svg>
+          </a>
+          <a href="https://linkedin.com/in/hilmantaufiqq" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="grid place-items-center w-11 h-11 rounded-xl border border-ink-200 dark:border-ink-700 hover:bg-brand-600 hover:text-white hover:border-brand-600 hover:-translate-y-1 transition-all">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.35c0-1.28-.02-2.92-1.78-2.92-1.78 0-2.05 1.39-2.05 2.83V21H9z"/></svg>
+          </a>
+          <a href="https://wa.me/6285173136698" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="grid place-items-center w-11 h-11 rounded-xl border border-ink-200 dark:border-ink-700 hover:bg-brand-600 hover:text-white hover:border-brand-600 hover:-translate-y-1 transition-all">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.86.5 3.6 1.36 5.1L2 22l5.2-1.52a9.8 9.8 0 004.84 1.26h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.02-5.1-2.88-6.96A9.77 9.77 0 0012.04 2zm0 17.9a8.1 8.1 0 01-4.13-1.13l-.3-.18-3.07.9.82-3-.2-.31a8.06 8.06 0 01-1.24-4.34c0-4.51 3.68-8.18 8.2-8.18 2.19 0 4.24.85 5.79 2.4a8.13 8.13 0 012.4 5.79c0 4.52-3.68 8.19-8.27 8.19zm4.5-6.13c-.25-.13-1.46-.72-1.68-.8-.23-.08-.4-.13-.56.12-.16.25-.64.8-.79.97-.14.16-.29.19-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.71-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.17 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg>
+          </a>
+          <!-- TODO: tambahkan tombol GitHub di sini bila akunnya sudah ada -->
+        </div>
+      </div>
+
+      <div class="order-1 lg:order-2 flex justify-center" data-aos="zoom-in" data-aos-delay="200">
+        <div class="relative animate-float">
+          <div class="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-tr from-brand-400/40 via-sky-400/25 to-emerald-300/40 blur-2xl" aria-hidden="true"></div>
+          <div class="relative w-60 h-60 sm:w-72 sm:h-72 lg:w-[23rem] lg:h-[23rem] rounded-[2rem] overflow-hidden ring-1 ring-white/60 dark:ring-white/10 shadow-2xl bg-gradient-to-br from-brand-100 to-sky-100 dark:from-ink-800 dark:to-ink-900">
+            <!-- TODO: taruh foto resolusi tinggi di assets/img/profile.jpg -->
+            <img src="assets/img/profile.jpg" alt="Foto profil Hilman Taufiq Al Hakim" width="851" height="1280" loading="eager" decoding="async" class="w-full h-full object-cover object-[50%_24%] transition-transform duration-700 hover:scale-105" onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden');this.nextElementSibling.classList.add('grid');" />
+            <div class="hidden w-full h-full place-items-center text-brand-700/70 dark:text-brand-300/70">
+              <div class="text-center">
+                <div class="text-6xl font-black tracking-tight">HT</div>
+                <div class="mt-2 text-[11px] font-semibold uppercase tracking-[0.2em]">Foto profil</div>
+              </div>
+            </div>
+          </div>
+          <div class="absolute -top-4 -right-3 sm:-right-7 flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-white dark:bg-ink-900 shadow-xl ring-1 ring-ink-100 dark:ring-ink-800">
+            <span class="grid place-items-center w-9 h-9 shrink-0 rounded-xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 20V10m5 10V4m5 16v-7m5 7V8"/></svg>
+            </span>
+            <span>
+              <span class="block text-sm font-extrabold leading-tight text-ink-900 dark:text-white">Data Analysis</span>
+              <span class="block text-[11px] font-medium text-ink-500 dark:text-ink-400">BigQuery &middot; Looker Studio</span>
+            </span>
+          </div>
+
+          <div class="absolute -bottom-5 -left-4 sm:-left-8 flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-white dark:bg-ink-900 shadow-xl ring-1 ring-ink-100 dark:ring-ink-800">
+            <span class="grid place-items-center w-9 h-9 shrink-0 rounded-xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9.5 4a2.5 2.5 0 00-2.5 2.5A2.5 2.5 0 004.5 9v1.5A2.5 2.5 0 006 12.8V15a3 3 0 003 3h.5V4h-.5zM14.5 4a2.5 2.5 0 012.5 2.5A2.5 2.5 0 0119.5 9v1.5a2.5 2.5 0 01-1.5 2.3V15a3 3 0 01-3 3H14V4h.5z"/></svg>
+            </span>
+            <span>
+              <span class="block text-sm font-extrabold leading-tight text-ink-900 dark:text-white">Data Scientist</span>
+              <span class="block text-[11px] font-medium text-ink-500 dark:text-ink-400">Python &middot; Machine Learning</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="#about" aria-label="Scroll ke section About" class="absolute bottom-6 left-1/2 -translate-x-1/2 hidden sm:grid place-items-center gap-1 text-ink-400 hover:text-brand-600 transition-colors">
+    <span class="text-[10px] font-semibold uppercase tracking-[0.2em]">Scroll</span>
+    <svg class="w-5 h-5 animate-bounce-slow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+  </a>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about" class="relative min-h-[100svh] flex flex-col justify-center py-10 sm:py-12">
+  <div class="mx-auto max-w-[88rem] px-5 sm:px-8 lg:px-12">
+    <div class="sec-head max-w-2xl" data-aos="fade-up">
+      <p class="eyebrow text-xs font-bold uppercase tracking-[0.2em] text-brand-600 dark:text-brand-400"><span class="num">01</span>About</p>
+      <h2 class="mt-2.5 text-[1.7rem] sm:text-[2.15rem] font-semibold tracking-[-0.015em] leading-[1.15] text-ink-950 dark:text-white">Analisis, model, dan desain dalam satu profil</h2>
+    </div>
+
+    <div class="mt-6 grid lg:grid-cols-[1.45fr_.55fr] gap-10 lg:gap-12 items-start">
+      <div data-aos="fade-up" data-aos-delay="80">
+        <p class="text-[15px] sm:text-base leading-relaxed text-ink-600 dark:text-ink-400">
+          Saya <strong class="font-semibold text-ink-800 dark:text-ink-200">Data Analyst &amp; Data Scientist</strong> dengan latar Information Systems dari Telkom University. Pekerjaan saya berkisar di dua sisi: mengubah data mentah jadi dashboard dan laporan yang dipakai untuk mengambil keputusan bisnis, serta membangun model machine learning &amp; NLP untuk mengolah data teks berskala besar, mulai dari pembersihan data, ekstraksi fitur, sampai evaluasi dan perbandingan model.
+        </p>
+        <p class="mt-3 text-[15px] sm:text-base leading-relaxed text-ink-600 dark:text-ink-400">
+          Selain itu saya juga punya pengalaman merancang antarmuka (UI/UX) yang user-friendly, dari sistem IoT smart farming hingga aplikasi web. Saya senang bekerja lintas tim teknis dan non-teknis, detail-oriented, dan cepat beradaptasi dengan tools baru.
+        </p>
+
+        <dl class="mt-8 grid sm:grid-cols-2 gap-4">
+          <div class="surface spotlight p-5 rounded-2xl border border-ink-100 dark:border-ink-800/80 hover:border-brand-300 dark:hover:border-brand-700">
+            <dt class="text-[11px] font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400">Universitas</dt>
+            <dd class="mt-1.5 font-semibold text-ink-900 dark:text-white">Telkom University</dd>
+            <dd class="text-sm text-ink-500 dark:text-ink-400">Sep 2022 &ndash; Aug 2026</dd>
+          </div>
+          <div class="surface spotlight p-5 rounded-2xl border border-ink-100 dark:border-ink-800/80 hover:border-brand-300 dark:hover:border-brand-700">
+            <dt class="text-[11px] font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400">Jurusan</dt>
+            <dd class="mt-1.5 font-semibold text-ink-900 dark:text-white">Information System</dd>
+            <dd class="text-sm text-ink-500 dark:text-ink-400">Fakultas Rekayasa Industri</dd>
+          </div>
+          <div class="surface spotlight p-5 rounded-2xl border border-ink-100 dark:border-ink-800/80 hover:border-brand-300 dark:hover:border-brand-700">
+            <dt class="text-[11px] font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400">IPK</dt>
+            <dd class="mt-1.5 font-semibold text-ink-900 dark:text-white font-mono">3.33 / 4.00</dd>
+            <dd class="text-sm text-ink-500 dark:text-ink-400">Skala 4</dd>
+          </div>
+          <div class="surface spotlight p-5 rounded-2xl border border-ink-100 dark:border-ink-800/80 hover:border-brand-300 dark:hover:border-brand-700">
+            <dt class="text-[11px] font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400">Spesialisasi</dt>
+            <dd class="mt-1.5 font-semibold text-ink-900 dark:text-white">Analytics &amp; Machine Learning</dd>
+            <dd class="text-sm text-ink-500 dark:text-ink-400">BI dashboarding &middot; NLP</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div data-aos="fade-up" data-aos-delay="160">
+        <div class="grid grid-cols-3 lg:grid-cols-1 gap-3 text-center lg:text-left">
+          <div class="p-4 rounded-2xl bg-brand-50 dark:bg-ink-900 ring-1 ring-brand-100 dark:ring-ink-800">
+            <p class="text-2xl font-extrabold text-brand-700 dark:text-brand-300 font-mono" data-count="4">0</p>
+            <p class="mt-1 text-[11px] font-medium leading-tight text-ink-500 dark:text-ink-400">Pengalaman kerja &amp; organisasi</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-brand-50 dark:bg-ink-900 ring-1 ring-brand-100 dark:ring-ink-800">
+            <p class="text-2xl font-extrabold text-brand-700 dark:text-brand-300 font-mono"><span data-count="7">0</span></p>
+            <p class="mt-1 text-[11px] font-medium leading-tight text-ink-500 dark:text-ink-400">Project akademik &amp; profesional</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-brand-50 dark:bg-ink-900 ring-1 ring-brand-100 dark:ring-ink-800">
+            <p class="text-2xl font-extrabold text-brand-700 dark:text-brand-300 font-mono" data-count="3.33" data-decimals="2">0</p>
+            <p class="mt-1 text-[11px] font-medium leading-tight text-ink-500 dark:text-ink-400">IPK dari 4.00</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  <hr class="rule mx-auto max-w-[88rem]" />
+
+
+<!-- ================= SKILLS ================= -->
+<section id="skills" class="relative min-h-[100svh] flex flex-col justify-center py-10 sm:py-12 grain bg-gradient-to-b from-ink-50/80 via-ink-50/40 to-transparent dark:from-ink-900/50 dark:via-ink-900/25 dark:to-transparent">
+  <div class="mx-auto max-w-[88rem] px-5 sm:px-8 lg:px-12">
+    <div class="sec-head max-w-2xl" data-aos="fade-up">
+      <p class="eyebrow text-xs font-bold uppercase tracking-[0.2em] text-brand-600 dark:text-brand-400"><span class="num">02</span>Skills</p>
+      <h2 class="mt-2.5 text-[1.7rem] sm:text-[2.15rem] font-semibold tracking-[-0.015em] leading-[1.15] text-ink-950 dark:text-white">Tools &amp; kemampuan</h2>
+      <p class="mt-2.5 text-ink-600 dark:text-ink-400">Dari query dan dashboard, model machine learning, sampai prototipe antarmuka.</p>
+    </div>
+
+    <div class="mt-5 flex flex-wrap gap-2" data-aos="fade-up" data-aos-delay="80" role="tablist" aria-label="Filter kategori skill">
+      <button class="skill-tab px-4 py-2 rounded-full text-sm font-semibold border transition-all" data-filter="all" role="tab" aria-selected="true">Semua</button>
+      <button class="skill-tab px-4 py-2 rounded-full text-sm font-semibold border transition-all" data-filter="data" role="tab" aria-selected="false">Data &amp; BI</button>
+      <button class="skill-tab px-4 py-2 rounded-full text-sm font-semibold border transition-all" data-filter="ml" role="tab" aria-selected="false">DS, ML &amp; NLP</button>
+      <button class="skill-tab px-4 py-2 rounded-full text-sm font-semibold border transition-all" data-filter="design" role="tab" aria-selected="false">UI/UX</button>
+      <button class="skill-tab px-4 py-2 rounded-full text-sm font-semibold border transition-all" data-filter="web" role="tab" aria-selected="false">Web &amp; Programming</button>
+      <button class="skill-tab px-4 py-2 rounded-full text-sm font-semibold border transition-all" data-filter="enterprise" role="tab" aria-selected="false">Enterprise &amp; System</button>
+      <button class="skill-tab px-4 py-2 rounded-full text-sm font-semibold border transition-all" data-filter="devops" role="tab" aria-selected="false">Dev &amp; Infra</button>
+      <button class="skill-tab px-4 py-2 rounded-full text-sm font-semibold border transition-all" data-filter="soft" role="tab" aria-selected="false">Soft Skills</button>
+    </div>
+
+    <div id="skill-grid" class="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5"></div>
+
+    <figure class="surface mt-6 p-6 sm:p-7 rounded-3xl border border-ink-100 dark:border-ink-800/80" data-aos="fade-up">
+      <figcaption class="mb-5">
+        <h3 class="text-base font-bold text-ink-950 dark:text-white">Sebaran keahlian per bidang</h3>
+        <p class="mt-1 text-sm text-ink-500 dark:text-ink-400">Jumlah tools dan metode yang saya pakai di tiap bidang.</p>
+      </figcaption>
+      <div id="chart-skills"></div>
+    </figure>
+
+    <div class="mt-5 grid sm:grid-cols-2 gap-4" data-aos="fade-up">
+      <div class="surface p-5 rounded-2xl border border-ink-100 dark:border-ink-800/80">
+        <p class="text-[11px] font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400">Bahasa</p>
+        <div class="mt-3 space-y-3">
+          <div>
+            <div class="flex justify-between text-sm font-medium"><span>Indonesia</span><span class="text-ink-500 dark:text-ink-400">Native</span></div>
+            <div class="mt-1.5 h-2 rounded-full bg-ink-100 dark:bg-ink-800 overflow-hidden"><div class="h-full rounded-full bg-brand-500 transition-[width] duration-1000 ease-out" data-bar="100" style="width:0"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm font-medium"><span>English</span><span class="text-ink-500 dark:text-ink-400">Intermediate</span></div>
+            <div class="mt-1.5 h-2 rounded-full bg-ink-100 dark:bg-ink-800 overflow-hidden"><div class="h-full rounded-full bg-brand-500 transition-[width] duration-1000 ease-out" data-bar="65" style="width:0"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="surface p-5 rounded-2xl border border-ink-100 dark:border-ink-800/80">
+        <p class="text-[11px] font-bold uppercase tracking-widest text-brand-600 dark:text-brand-400">Cara kerja saya</p>
+        <ul class="mt-3 space-y-2 text-sm text-ink-600 dark:text-ink-400">
+          <li class="flex gap-2"><span class="text-brand-500 mt-0.5">&#9679;</span> Mulai dari pertanyaan bisnis, bukan dari tools</li>
+          <li class="flex gap-2"><span class="text-brand-500 mt-0.5">&#9679;</span> Data dibersihkan dulu, baru divisualisasikan</li>
+          <li class="flex gap-2"><span class="text-brand-500 mt-0.5">&#9679;</span> Model dibandingkan, bukan sekadar dipakai satu</li>
+          <li class="flex gap-2"><span class="text-brand-500 mt-0.5">&#9679;</span> Output harus bisa dipakai orang non-teknis</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience" class="relative min-h-[100svh] flex flex-col justify-center py-10 sm:py-12">
+  <div class="mx-auto max-w-[88rem] px-5 sm:px-8 lg:px-12">
+    <div class="sec-head max-w-2xl" data-aos="fade-up">
+      <p class="eyebrow text-xs font-bold uppercase tracking-[0.2em] text-brand-600 dark:text-brand-400"><span class="num">03</span>Experience</p>
+      <h2 class="mt-2.5 text-[1.7rem] sm:text-[2.15rem] font-semibold tracking-[-0.015em] leading-[1.15] text-ink-950 dark:text-white">Pengalaman &amp; organisasi</h2>
+    </div>
+
+    <figure class="surface mt-6 p-6 sm:p-7 rounded-3xl border border-ink-100 dark:border-ink-800/80" data-aos="fade-up">
+      <figcaption class="flex flex-wrap items-start justify-between gap-4 mb-6">
+        <div>
+          <h3 class="text-base font-bold text-ink-950 dark:text-white">Linimasa peran</h3>
+          <p class="mt-1 text-sm text-ink-500 dark:text-ink-400">Rentang waktu tiap peran, disusun berdasarkan tanggal.</p>
+        </div>
+        <div id="chart-timeline-legend" class="flex flex-wrap items-center gap-x-4 gap-y-2"></div>
+      </figcaption>
+      <div id="chart-timeline" class="overflow-x-auto"></div>
+    </figure>
+
+    <div id="timeline" class="relative mt-8">
+      <div class="absolute left-[15px] md:left-1/2 top-2 bottom-2 w-0.5 -translate-x-1/2 bg-ink-200/70 dark:bg-ink-800" aria-hidden="true">
+        <div id="timeline-progress" class="w-full bg-brand-500 origin-top" style="height:0"></div>
+      </div>
+      <ol class="space-y-7"></ol>
+    </div>
+  </div>
+</section>
+  <hr class="rule mx-auto max-w-[88rem]" />
+
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects" class="relative min-h-[100svh] flex flex-col justify-center py-10 sm:py-12 grain bg-gradient-to-b from-transparent via-ink-50/60 to-ink-50/80 dark:via-ink-900/30 dark:to-ink-900/50">
+  <div class="mx-auto max-w-[88rem] px-5 sm:px-8 lg:px-12">
+    <div class="sec-head max-w-2xl" data-aos="fade-up">
+      <p class="eyebrow text-xs font-bold uppercase tracking-[0.2em] text-brand-600 dark:text-brand-400"><span class="num">04</span>Projects</p>
+      <h2 class="mt-2.5 text-[1.7rem] sm:text-[2.15rem] font-semibold tracking-[-0.015em] leading-[1.15] text-ink-950 dark:text-white">Yang pernah saya kerjakan</h2>
+      <p class="mt-2.5 text-ink-600 dark:text-ink-400">Klik kartu untuk melihat detail project.</p>
+    </div>
+
+    <div class="mt-5 flex flex-wrap gap-2" data-aos="fade-up" data-aos-delay="80">
+      <button class="project-tab px-4 py-2 rounded-full text-sm font-semibold border transition-all" data-filter="all">Semua</button>
+      <button class="project-tab px-4 py-2 rounded-full text-sm font-semibold border transition-all" data-filter="ds">Data Science &amp; ML</button>
+      <button class="project-tab px-4 py-2 rounded-full text-sm font-semibold border transition-all" data-filter="da">Data Analyst</button>
+      <button class="project-tab px-4 py-2 rounded-full text-sm font-semibold border transition-all" data-filter="uiux">UI/UX</button>
+    </div>
+
+    <div id="project-grid" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </div>
+</section>
+
+<!-- ================= EDUCATION ================= -->
+<section id="education" class="relative min-h-[100svh] flex flex-col justify-center py-10 sm:py-12">
+  <div class="mx-auto max-w-[88rem] px-5 sm:px-8 lg:px-12">
+    <div class="sec-head max-w-2xl" data-aos="fade-up">
+      <p class="eyebrow text-xs font-bold uppercase tracking-[0.2em] text-brand-600 dark:text-brand-400"><span class="num">05</span>Education</p>
+      <h2 class="mt-2.5 text-[1.7rem] sm:text-[2.15rem] font-semibold tracking-[-0.015em] leading-[1.15] text-ink-950 dark:text-white">Pendidikan &amp; sertifikat</h2>
+    </div>
+
+    <div class="mt-6 grid md:grid-cols-2 gap-5">
+      <article class="surface spotlight p-6 sm:p-7 rounded-3xl border border-ink-100 dark:border-ink-800/80 hover:border-brand-300 dark:hover:border-brand-700" data-aos="fade-up">
+        <div class="flex items-start gap-4">
+          <span class="grid place-items-center shrink-0 w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4l9 5-9 5-9-5 9-5z"/><path stroke-linecap="round" d="M6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/></svg>
+          </span>
+          <div>
+            <h3 class="text-lg font-bold text-ink-950 dark:text-white">Telkom University, Bandung</h3>
+            <p class="mt-0.5 font-medium text-brand-700 dark:text-brand-300">Bachelor of Information System</p>
+            <p class="mt-2 text-sm text-ink-500 dark:text-ink-400">Sep 2022 &ndash; Aug 2026 &middot; Fakultas Rekayasa Industri</p>
+            <p class="mt-1 text-sm text-ink-500 dark:text-ink-400">IPK <span class="font-mono font-semibold text-ink-700 dark:text-ink-200">3.33/4.00</span></p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-lg text-xs font-medium bg-ink-100 dark:bg-ink-800 text-ink-600 dark:text-ink-300">Data Analytics</span>
+              <span class="px-2.5 py-1 rounded-lg text-xs font-medium bg-ink-100 dark:bg-ink-800 text-ink-600 dark:text-ink-300">Machine Learning</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="surface spotlight p-6 sm:p-7 rounded-3xl border border-ink-100 dark:border-ink-800/80 hover:border-brand-300 dark:hover:border-brand-700" data-aos="fade-up" data-aos-delay="100">
+        <div class="flex items-start gap-4">
+          <span class="grid place-items-center shrink-0 w-12 h-12 rounded-2xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 20V8l8-4 8 4v12M9 20v-5h6v5"/></svg>
+          </span>
+          <div>
+            <h3 class="text-lg font-bold text-ink-950 dark:text-white">SMAN 24 Bandung</h3>
+            <p class="mt-0.5 font-medium text-brand-700 dark:text-brand-300">Natural Science (IPA)</p>
+            <p class="mt-2 text-sm text-ink-500 dark:text-ink-400">Aug 2019 &ndash; May 2022</p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Sertifikat -->
+    <div class="mt-9">
+      <div class="flex flex-wrap items-end justify-between gap-3" data-aos="fade-up">
+        <h3 class="text-xl font-bold text-ink-950 dark:text-white">Sertifikat &amp; Sertifikasi</h3>
+        <p class="text-sm text-ink-500 dark:text-ink-400">Klik kartu untuk melihat dokumen aslinya</p>
+      </div>
+      <!-- Konten diisi dari CERTS di assets/js/data.js -->
+      <div id="cert-grid" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+    </div>
+  </div>
+</section>
+  <hr class="rule mx-auto max-w-[88rem]" />
+
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="relative min-h-[100svh] flex flex-col justify-center py-10 sm:py-12 overflow-hidden grain bg-gradient-to-b from-transparent to-ink-50/90 dark:to-ink-900/50">
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div class="absolute -bottom-32 left-1/4 w-[28rem] h-[28rem] rounded-full bg-brand-300/30 dark:bg-brand-800/20 blur-3xl animate-blob"></div>
+    <div class="absolute -top-24 right-0 w-[24rem] h-[24rem] rounded-full bg-sky-300/25 dark:bg-sky-900/20 blur-3xl animate-blob" style="animation-delay:-8s"></div>
+  </div>
+
+  <div class="mx-auto max-w-[88rem] px-5 sm:px-8 lg:px-12">
+    <div class="sec-head max-w-2xl" data-aos="fade-up">
+      <p class="eyebrow text-xs font-bold uppercase tracking-[0.2em] text-brand-600 dark:text-brand-400"><span class="num">06</span>Contact</p>
+      <h2 class="mt-2.5 text-[1.7rem] sm:text-[2.15rem] font-semibold tracking-[-0.015em] leading-[1.15] text-ink-950 dark:text-white">Mari berdiskusi</h2>
+      <p class="mt-2.5 text-ink-600 dark:text-ink-400">Terbuka untuk peluang sebagai Data Analyst, Data Scientist/NLP, maupun UI/UX Designer.</p>
+    </div>
+
+    <div class="mt-6 grid lg:grid-cols-[.9fr_1.1fr] gap-10">
+      <div class="space-y-3" data-aos="fade-up" data-aos-delay="80">
+        <a href="mailto:hilman01taufiq@gmail.com" class="group surface spotlight flex items-center gap-4 p-4 rounded-2xl border border-ink-100 dark:border-ink-800/80 hover:border-brand-300 dark:hover:border-brand-700">
+          <span class="grid place-items-center w-11 h-11 rounded-xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300 transition-transform group-hover:-translate-y-1">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path stroke-linecap="round" d="M3.5 7l8.5 6 8.5-6"/></svg>
+          </span>
+          <span class="min-w-0">
+            <span class="block text-[11px] font-bold uppercase tracking-widest text-ink-400">Email</span>
+            <span class="block font-semibold text-ink-900 dark:text-white truncate">hilman01taufiq@gmail.com</span>
+          </span>
+        </a>
+
+        <a href="https://linkedin.com/in/hilmantaufiqq" target="_blank" rel="noopener noreferrer" class="group surface spotlight flex items-center gap-4 p-4 rounded-2xl border border-ink-100 dark:border-ink-800/80 hover:border-brand-300 dark:hover:border-brand-700">
+          <span class="grid place-items-center w-11 h-11 rounded-xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300 transition-transform group-hover:-translate-y-1">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.35c0-1.28-.02-2.92-1.78-2.92-1.78 0-2.05 1.39-2.05 2.83V21H9z"/></svg>
+          </span>
+          <span class="min-w-0">
+            <span class="block text-[11px] font-bold uppercase tracking-widest text-ink-400">LinkedIn</span>
+            <span class="block font-semibold text-ink-900 dark:text-white truncate">linkedin.com/in/hilmantaufiqq</span>
+          </span>
+        </a>
+
+        <a href="https://wa.me/6285173136698" target="_blank" rel="noopener noreferrer" class="group surface spotlight flex items-center gap-4 p-4 rounded-2xl border border-ink-100 dark:border-ink-800/80 hover:border-brand-300 dark:hover:border-brand-700">
+          <span class="grid place-items-center w-11 h-11 rounded-xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300 transition-transform group-hover:-translate-y-1">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.86.5 3.6 1.36 5.1L2 22l5.2-1.52a9.8 9.8 0 004.84 1.26h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.02-5.1-2.88-6.96A9.77 9.77 0 0012.04 2zm0 17.9a8.1 8.1 0 01-4.13-1.13l-.3-.18-3.07.9.82-3-.2-.31a8.06 8.06 0 01-1.24-4.34c0-4.51 3.68-8.18 8.2-8.18 2.19 0 4.24.85 5.79 2.4a8.13 8.13 0 012.4 5.79c0 4.52-3.68 8.19-8.27 8.19z"/></svg>
+          </span>
+          <span class="min-w-0">
+            <span class="block text-[11px] font-bold uppercase tracking-widest text-ink-400">WhatsApp</span>
+            <span class="block font-semibold text-ink-900 dark:text-white">0851-7313-6698</span>
+          </span>
+        </a>
+
+        <div class="surface flex items-center gap-4 p-4 rounded-2xl border border-ink-100 dark:border-ink-800/80">
+          <span class="grid place-items-center w-11 h-11 rounded-xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21s7-5.2 7-11a7 7 0 10-14 0c0 5.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          </span>
+          <span>
+            <span class="block text-[11px] font-bold uppercase tracking-widest text-ink-400">Lokasi</span>
+            <span class="block font-semibold text-ink-900 dark:text-white">Bandung, Indonesia</span>
+          </span>
+        </div>
+      </div>
+
+      <!--
+        TODO FORM: ganti action di bawah dengan endpoint Formspree kamu
+        (daftar di formspree.io, salin URL "https://formspree.io/f/xxxxxxx").
+        Selama masih placeholder, submit akan otomatis fallback ke buka email client.
+      -->
+      <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="surface p-6 sm:p-8 rounded-3xl border border-ink-100 dark:border-ink-800/80" data-aos="fade-up" data-aos-delay="160" novalidate>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label for="name" class="block text-sm font-semibold mb-1.5">Nama</label>
+            <input id="name" name="name" type="text" required autocomplete="name" placeholder="Nama lengkap"
+              class="w-full px-4 py-3 rounded-xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-950 placeholder:text-ink-400 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:border-brand-500 transition-all" />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-semibold mb-1.5">Email</label>
+            <input id="email" name="email" type="email" required autocomplete="email" placeholder="nama@email.com"
+              class="w-full px-4 py-3 rounded-xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-950 placeholder:text-ink-400 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:border-brand-500 transition-all" />
+          </div>
+        </div>
+        <div class="mt-4">
+          <label for="subject" class="block text-sm font-semibold mb-1.5">Subjek</label>
+          <input id="subject" name="subject" type="text" placeholder="Contoh: Peluang kerja Data Analyst"
+            class="w-full px-4 py-3 rounded-xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-950 placeholder:text-ink-400 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:border-brand-500 transition-all" />
+        </div>
+        <div class="mt-4">
+          <label for="message" class="block text-sm font-semibold mb-1.5">Pesan</label>
+          <textarea id="message" name="message" rows="5" required placeholder="Tulis pesan kamu di sini..."
+            class="w-full px-4 py-3 rounded-xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-ink-950 placeholder:text-ink-400 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:border-brand-500 transition-all resize-y"></textarea>
+        </div>
+
+        <button id="submit-btn" type="submit"
+          class="btn-shine mt-6 w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-600 text-white font-semibold shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/40 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:translate-y-0 transition-all">
+          <span id="btn-label">Kirim Pesan</span>
+          <svg id="btn-spinner" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"/><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z"/></svg>
+          <svg id="btn-check" class="hidden w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        </button>
+        <p id="form-status" role="status" aria-live="polite" class="mt-3 text-sm text-center text-ink-500 dark:text-ink-400"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="relative overflow-hidden border-t border-ink-100 dark:border-ink-800/80 py-8">
+  <div class="mx-auto max-w-[88rem] px-5 sm:px-8 lg:px-12">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+      <div class="flex items-center gap-2 order-2 sm:order-1">
+        <a href="mailto:hilman01taufiq@gmail.com" aria-label="Email" class="grid place-items-center w-11 h-11 rounded-full border border-ink-200 dark:border-ink-700 hover:bg-brand-600 hover:text-white hover:border-brand-600 hover:-translate-y-1 transition-all">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path stroke-linecap="round" d="M3.5 7l8.5 6 8.5-6"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/hilmantaufiqq" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="grid place-items-center w-11 h-11 rounded-full border border-ink-200 dark:border-ink-700 hover:bg-brand-600 hover:text-white hover:border-brand-600 hover:-translate-y-1 transition-all">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.35c0-1.28-.02-2.92-1.78-2.92-1.78 0-2.05 1.39-2.05 2.83V21H9z"/></svg>
+        </a>
+        <a href="https://wa.me/6285173136698" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="grid place-items-center w-11 h-11 rounded-full border border-ink-200 dark:border-ink-700 hover:bg-brand-600 hover:text-white hover:border-brand-600 hover:-translate-y-1 transition-all">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.86.5 3.6 1.36 5.1L2 22l5.2-1.52a9.8 9.8 0 004.84 1.26h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.02-5.1-2.88-6.96A9.77 9.77 0 0012.04 2zm0 17.9a8.1 8.1 0 01-4.13-1.13l-.3-.18-3.07.9.82-3-.2-.31a8.06 8.06 0 01-1.24-4.34c0-4.51 3.68-8.18 8.2-8.18 2.19 0 4.24.85 5.79 2.4a8.13 8.13 0 012.4 5.79c0 4.52-3.68 8.19-8.27 8.19z"/></svg>
+        </a>
+        <a href="#home" aria-label="Kembali ke atas" class="grid place-items-center w-11 h-11 rounded-full border border-ink-200 dark:border-ink-700 hover:bg-brand-600 hover:text-white hover:border-brand-600 hover:-translate-y-1 transition-all">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19V5m-6 6l6-6 6 6"/></svg>
+        </a>
+      </div>
+
+      <p class="order-1 sm:order-2 text-sm text-ink-500 dark:text-ink-400">
+        &copy; <span id="year"></span> Hilman Taufiq Al Hakim &middot; Bandung, Indonesia
+      </p>
+    </div>
+  </div>
+</footer>
+
+<button id="to-top" type="button" aria-label="Kembali ke atas"
+  class="grid place-items-center w-12 h-12 rounded-full bg-brand-600 text-white shadow-xl shadow-brand-600/30 hover:bg-brand-700 hover:-translate-y-1 transition-all">
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19V5m-6 6l6-6 6 6"/></svg>
+</button>
+
+<!-- ================= LIGHTBOX SERTIFIKAT ================= -->
+<div id="lightbox" class="fixed inset-0 z-[85] hidden" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
+  <div id="lightbox-backdrop" class="absolute inset-0 bg-ink-950/80 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
+  <div class="relative h-full overflow-y-auto p-4 sm:p-8 grid place-items-center">
+    <div id="lightbox-panel" class="relative w-full max-w-3xl opacity-0 scale-95 transition-all duration-300">
+      <button id="lightbox-close" aria-label="Tutup sertifikat" class="absolute -top-3 -right-3 z-10 grid place-items-center w-10 h-10 rounded-full bg-white dark:bg-ink-800 border border-ink-200 dark:border-ink-700 shadow-lg hover:bg-ink-100 dark:hover:bg-ink-700 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="rounded-2xl overflow-hidden bg-white dark:bg-ink-900 shadow-2xl">
+        <img id="lightbox-img" alt="" class="w-full h-auto" />
+        <div class="p-5 sm:p-6 border-t border-ink-100 dark:border-ink-800">
+          <h3 id="lightbox-title" class="font-bold text-ink-950 dark:text-white"></h3>
+          <p id="lightbox-meta" class="mt-1 text-sm text-ink-500 dark:text-ink-400"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PROJECT MODAL ================= -->
+<div id="modal" class="fixed inset-0 z-[80] hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div id="modal-backdrop" class="absolute inset-0 bg-ink-950/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
+  <div class="relative h-full overflow-y-auto p-4 sm:p-8 grid place-items-center">
+    <div id="modal-panel" class="relative w-full max-w-2xl rounded-3xl bg-white dark:bg-ink-900 shadow-2xl ring-1 ring-ink-100 dark:ring-ink-800 opacity-0 translate-y-4 scale-95 transition-all duration-300">
+      <button id="modal-close" aria-label="Tutup detail project" class="absolute top-4 right-4 grid place-items-center w-9 h-9 rounded-lg bg-white/90 dark:bg-ink-800 border border-ink-200 dark:border-ink-700 hover:bg-ink-100 dark:hover:bg-ink-700 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div id="modal-media" class="h-44 sm:h-56 rounded-t-3xl bg-gradient-to-br from-brand-500 to-sky-600"></div>
+      <div class="p-6 sm:p-8">
+        <p id="modal-tag" class="eyebrow text-xs font-bold uppercase tracking-[0.2em] text-brand-600 dark:text-brand-400"></p>
+        <h3 id="modal-title" class="mt-2 text-2xl font-extrabold tracking-tight text-ink-950 dark:text-white"></h3>
+        <p id="modal-meta" class="mt-1 text-sm text-ink-500 dark:text-ink-400"></p>
+        <p id="modal-desc" class="mt-4 leading-relaxed text-ink-600 dark:text-ink-300"></p>
+        <ul id="modal-points" class="mt-4 space-y-2 text-sm text-ink-600 dark:text-ink-300"></ul>
+        <div id="modal-tech" class="mt-6 flex flex-wrap gap-2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/charts.js"></script>
+</body>
+</html>
